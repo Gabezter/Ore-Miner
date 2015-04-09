@@ -1,0 +1,13 @@
+main: com.gabezter4.oreMiner.Main
+name: Ore Miner
+version: 0.1.0
+
+commands:
+  oreminer config:
+    description: Config Command
+    usage: /oreminer config [#]
+    permission: oreminer.config
+    permission-message: You are not allowed to do this command.
+permissions:
+  oreminer.config:
+    default: op
