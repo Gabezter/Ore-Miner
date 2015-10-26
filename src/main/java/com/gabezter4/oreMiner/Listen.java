@@ -1,10 +1,13 @@
 package com.gabezter4.oreMiner;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,351 +22,524 @@ public class Listen implements Listener {
 	}
 
 	@EventHandler
-	public void blockBreakEvent(BlockBreakEvent e) {
-		Player player = e.getPlayer();
-		Location loc = e.getBlock().getLocation();
-		int num = 0;
-		Material mat;
-		if (e.getBlock().getType().equals(Material.COAL_ORE)) {
-			mat = Material.COAL;
-			if (player.getGameMode().equals(GameMode.CREATIVE)) {
-				e.setCancelled(false);
-			} else {
-				player.sendMessage(ChatColor.RED + "Started Scanning");
-				for (int x = -10; x < 10; x++) {
-					Block scan1 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + 0,
-							(int) loc.getZ() + 0);
-					if (scan1.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(x));
+	public boolean triggerInteract(BlockBreakEvent event) {
+		Bukkit.getServer().broadcastMessage(ChatColor.RED + event.toString());
+		ItemStack itemHand = event.getPlayer().getInventory().getItemInHand();
+		Player player = event.getPlayer();
+
+		Block blockes = event.getBlock();
+		String matBlock = blockes.getType().toString();
+		Material mat = blockes.getType();
+		Bukkit.getServer().broadcastMessage(ChatColor.RED + itemHand.toString());
+		Bukkit.getServer().broadcastMessage(ChatColor.BLUE + event.getPlayer().getItemInHand().toString());
+		Bukkit.getServer().broadcastMessage(ChatColor.WHITE + itemHand.getType().toString());
+		Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + event.getPlayer().getItemInHand().getType().toString());
+		Bukkit.getServer().broadcastMessage(ChatColor.RED + mat.toString());
+
+		Material stone = Material.STONE_PICKAXE;
+		Material iron = Material.IRON_PICKAXE;
+		Material wood = Material.WOOD_PICKAXE;
+		Material diamond = Material.DIAMOND_PICKAXE;
+		Material gold = Material.GOLD_PICKAXE;
+
+	//	if (player.getGameMode() == GameMode.SURVIVAL) {
+			if (itemHand.getType().equals(diamond) || itemHand.getType().equals(iron) || itemHand.getType().equals(stone) || itemHand.getType().equals(wood) || itemHand.getType().equals(gold)) {
+				if (mat.equals(Material.COAL_ORE))
+				{
+
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						ItemStack i = new ItemStack(Material.COAL, 1);
+						event.getPlayer().getInventory().addItem(i);
+						itemHand.setDurability((short) (itemHand.getDurability() - blocks.size()));
+						event.setCancelled(true);
+						block.setType(Material.AIR);
 					}
-					for (int y = -10; y < 10; y++) {
-						Block scan2 = loc.getWorld().getBlockAt(
-								(int) loc.getX() + x, (int) loc.getY() + y,
-								(int) loc.getZ() + 0);
-						if (scan2.getType() == mat) {
-							num++;
-							player.sendMessage(ChatColor.DARK_RED
-									+ Integer.toString(y));
-						}
-						for (int z = -10; z < 10; z++) {
-							Block scan3 = loc.getWorld().getBlockAt(
-									(int) loc.getX() + x, (int) loc.getY() + y,
-									(int) loc.getZ() + z);
-							if (scan3.getType() == mat) {
-								num++;
-								player.sendMessage(ChatColor.DARK_RED
-										+ Integer.toString(z));
-							}
-						}
-					}
+
+					return true;
+
 				}
-				player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-				e.setCancelled(true);
-				e.getBlock().setType(Material.AIR);
-				player.getInventory()
-						.addItem(new ItemStack(Material.COAL, num));
-				num = 0;
-			}
-		}
-		if (e.getBlock().getType().equals(Material.IRON_ORE)) {
-			mat = Material.IRON_ORE;
-			if (player.getGameMode().equals(GameMode.CREATIVE)) {
-				e.setCancelled(false);
-			} else {
-				player.sendMessage(ChatColor.RED + "Started Scanning");
-				for (int x = -10; x < 10; x++) {
-					Block scan1 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + 0,
-							(int) loc.getZ() + 0);
-					if (scan1.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(x));
+				if (mat.equals(Material.QUARTZ_ORE))
+				{
+
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						ItemStack i = new ItemStack(Material.QUARTZ, 1);
+						event.getPlayer().getInventory().addItem(i);
+						itemHand.setDurability((short) (itemHand.getDurability() - blocks.size()));
+						event.setCancelled(true);
+						block.setType(Material.AIR);
 					}
-					for (int y = -10; y < 10; y++) {
-						Block scan2 = loc.getWorld().getBlockAt(
-								(int) loc.getX() + x, (int) loc.getY() + y,
-								(int) loc.getZ() + 0);
-						if (scan2.getType() == mat) {
-							num++;
-							player.sendMessage(ChatColor.DARK_RED
-									+ Integer.toString(y));
-						}
-						for (int z = -10; z < 10; z++) {
-							Block scan3 = loc.getWorld().getBlockAt(
-									(int) loc.getX() + x, (int) loc.getY() + y,
-									(int) loc.getZ() + z);
-							if (scan3.getType() == mat) {
-								num++;
-								player.sendMessage(ChatColor.DARK_RED
-										+ Integer.toString(z));
-							}
-						}
-					}
+
+					return true;
+
 				}
-				player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-				e.setCancelled(true);
-				e.getBlock().setType(Material.AIR);
-				player.getInventory().addItem(
-						new ItemStack(Material.IRON_ORE, num));
 			}
-			num = 0;
-		}
-		if (e.getBlock().getType().equals(Material.REDSTONE_ORE)) {
-			mat = Material.REDSTONE_ORE;
-			if (player.getGameMode().equals(GameMode.CREATIVE)) {
-				e.setCancelled(false);
-			} else {
-				player.sendMessage(ChatColor.RED + "Started Scanning");
-				for (int x = -10; x < 10; x++) {
-					Block scan1 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + 0,
-							(int) loc.getZ() + 0);
-					if (scan1.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(x));
-					}
-					for (int y = -10; y < 10; y++) {
-						Block scan2 = loc.getWorld().getBlockAt(
-								(int) loc.getX() + x, (int) loc.getY() + y,
-								(int) loc.getZ() + 0);
-						if (scan2.getType() == mat) {
-							num++;
-							player.sendMessage(ChatColor.DARK_RED
-									+ Integer.toString(y));
+			if (itemHand.getType().equals(diamond) || itemHand.getType().equals(iron) || itemHand.getType().equals(stone)) {
+				if (mat.equals(Material.LAPIS_ORE))
+				{
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						Random random = new Random();
+						int rand = random.nextInt(5);
+						if (rand == 1) {
+							ItemStack i = new ItemStack(Material.INK_SACK, 8);
+							i.setDurability((short) 4);
+							event.getPlayer().getInventory().addItem(i);
+							itemHand.setDurability((short) (itemHand.getDurability() - 1));
+							event.setCancelled(true);
+							block.setType(Material.AIR);
 						}
-						for (int z = -10; z < 10; z++) {
-							Block scan3 = loc.getWorld().getBlockAt(
-									(int) loc.getX() + x, (int) loc.getY() + y,
-									(int) loc.getZ() + z);
-							if (scan3.getType() == mat) {
-								num++;
-								player.sendMessage(ChatColor.DARK_RED
-										+ Integer.toString(z));
-							}
+						else if (rand == 2) {
+							ItemStack i = new ItemStack(Material.INK_SACK, 7);
+							i.setDurability((short) 4);
+							event.getPlayer().getInventory().addItem(i);
+							itemHand.setDurability((short) (itemHand.getDurability() - 1));
+							event.setCancelled(true);
+							block.setType(Material.AIR);
+						}
+						else if (rand == 3) {
+							ItemStack i = new ItemStack(Material.INK_SACK, 6);
+							i.setDurability((short) 4);
+							event.getPlayer().getInventory().addItem(i);
+							itemHand.setDurability((short) (itemHand.getDurability() - 1));
+							event.setCancelled(true);
+							block.setType(Material.AIR);
+						}
+						else if (rand == 0) {
+							ItemStack i = new ItemStack(Material.INK_SACK, 5);
+							i.setDurability((short) 4);
+							event.getPlayer().getInventory().addItem(i);
+							itemHand.setDurability((short) (itemHand.getDurability() - 1));
+							event.setCancelled(true);
+							block.setType(Material.AIR);
+						}
+						else {
+							ItemStack i = new ItemStack(Material.INK_SACK, 4);
+							i.setDurability((short) 4);
+							event.getPlayer().getInventory().addItem(i);
+							itemHand.setDurability((short) (itemHand.getDurability() - 1));
+							event.setCancelled(true);
+							block.setType(Material.AIR);
 						}
 					}
+
+					return true;
+
 				}
-				player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-				e.setCancelled(true);
-				e.getBlock().setType(Material.AIR);
-				player.getInventory().addItem(
-						new ItemStack(Material.REDSTONE, num));
-			}
-			num = 0;
-		}
-		if (e.getBlock().getType().equals(Material.GOLD_ORE)) {
-			mat = Material.GOLD_ORE;
-			if (player.getGameMode().equals(GameMode.CREATIVE)) {
-				e.setCancelled(false);
-			} else {
-				player.sendMessage(ChatColor.RED + "Started Scanning");
-				for (int x = -10; x < 10; x++) {
-					Block scan1 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + 0,
-							(int) loc.getZ() + 0);
-					if (scan1.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(x));
+				if (mat.equals(Material.IRON_ORE))
+				{
+
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						ItemStack i = new ItemStack(mat, 1);
+						event.getPlayer().getInventory().addItem(i);
+						itemHand.setDurability((short) (itemHand.getDurability() - 1));
+						event.setCancelled(true);
+						block.setType(Material.AIR);
 					}
-					for (int y = -10; y < 10; y++) {
-						Block scan2 = loc.getWorld().getBlockAt(
-								(int) loc.getX() + x, (int) loc.getY() + y,
-								(int) loc.getZ() + 0);
-						if (scan2.getType() == mat) {
-							num++;
-							player.sendMessage(ChatColor.DARK_RED
-									+ Integer.toString(y));
-						}
-						for (int z = -10; z < 10; z++) {
-							Block scan3 = loc.getWorld().getBlockAt(
-									(int) loc.getX() + x, (int) loc.getY() + y,
-									(int) loc.getZ() + z);
-							if (scan3.getType() == mat) {
-								num++;
-								player.sendMessage(ChatColor.DARK_RED
-										+ Integer.toString(z));
-							}
-						}
-					}
+
+					return true;
+
 				}
-				player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-				e.setCancelled(true);
-				e.getBlock().setType(Material.AIR);
-				player.getInventory().addItem(
-						new ItemStack(Material.GOLD_ORE, num));
+
 			}
-			num = 0;
-		}
-		if (e.getBlock().getType().equals(Material.DIAMOND_ORE)) {
-			mat = Material.DIAMOND_ORE;
-			if (player.getGameMode().equals(GameMode.CREATIVE)) {
-				e.setCancelled(false);
-			} else {
-				player.sendMessage(ChatColor.RED + "Started Scanning");
-				for (int x = -10; x < 10; x++) {
-					Block scan1 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + 0,
-							(int) loc.getZ() + 0);
-					if (scan1.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(x));
+			if (itemHand.getType().equals(diamond) || itemHand.getType().equals(iron)) {
+				if (mat.equals(Material.EMERALD_ORE))
+				{
+
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						ItemStack i = new ItemStack(Material.EMERALD, 1);
+						event.getPlayer().getInventory().addItem(i);
+						itemHand.setDurability((short) (itemHand.getDurability() - 1));
+						event.setCancelled(true);
+						block.setType(Material.AIR);
 					}
-					for (int y = -10; y < 10; y++) {
-						Block scan2 = loc.getWorld().getBlockAt(
-								(int) loc.getX() + x, (int) loc.getY() + y,
-								(int) loc.getZ() + 0);
-						if (scan2.getType() == mat) {
-							num++;
-							player.sendMessage(ChatColor.DARK_RED
-									+ Integer.toString(y));
-						}
-						for (int z = -10; z < 10; z++) {
-							Block scan3 = loc.getWorld().getBlockAt(
-									(int) loc.getX() + x, (int) loc.getY() + y,
-									(int) loc.getZ() + z);
-							if (scan3.getType() == mat) {
-								num++;
-								player.sendMessage(ChatColor.DARK_RED
-										+ Integer.toString(z));
-							}
-						}
-					}
+
+					return true;
+
 				}
-				player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-				e.setCancelled(true);
-				e.getBlock().setType(Material.AIR);
-				player.getInventory().addItem(
-						new ItemStack(Material.DIAMOND, num));
-			}
-			num = 0;
-		}
-		if (e.getBlock().getType().equals(Material.EMERALD_ORE)) {
-			mat = Material.EMERALD_ORE;
-			if (player.getGameMode().equals(GameMode.CREATIVE)) {
-				e.setCancelled(false);
-			} else {
-				player.sendMessage(ChatColor.RED + "Started Scanning");
-				for (int x = -10; x < 10; x++) {
-					Block scan1 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + 0,
-							(int) loc.getZ() + 0);
-					if (scan1.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(x));
-					}
-					for (int y = -10; y < 10; y++) {
-						Block scan2 = loc.getWorld().getBlockAt(
-								(int) loc.getX() + x, (int) loc.getY() + y,
-								(int) loc.getZ() + 0);
-						if (scan2.getType() == mat) {
-							num++;
-							player.sendMessage(ChatColor.DARK_RED
-									+ Integer.toString(y));
+				if (mat.equals(Material.REDSTONE_ORE)||mat.equals(Material.GLOWING_REDSTONE_ORE))
+				{
+
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					mat = Material.REDSTONE_ORE;
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						Random random = new Random();
+						int rand = random.nextInt(2);
+						if (rand == 1) {
+							ItemStack i = new ItemStack(Material.REDSTONE, 5);
+							event.getPlayer().getInventory().addItem(i);
+							itemHand.setDurability((short) (itemHand.getDurability() - 1));
+							event.setCancelled(true);
+							block.setType(Material.AIR);
 						}
-						for (int z = -10; z < 10; z++) {
-							Block scan3 = loc.getWorld().getBlockAt(
-									(int) loc.getX() + x, (int) loc.getY() + y,
-									(int) loc.getZ() + z);
-							if (scan3.getType() == mat) {
-								num++;
-								player.sendMessage(ChatColor.DARK_RED
-										+ Integer.toString(z));
-							}
+						else {
+							ItemStack i = new ItemStack(Material.REDSTONE, 4);
+							event.getPlayer().getInventory().addItem(i);
+							itemHand.setDurability((short) (itemHand.getDurability() - 1));
+							event.setCancelled(true);
+							block.setType(Material.AIR);
 						}
+
 					}
+
+					return true;
+
 				}
-				player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-				e.setCancelled(true);
-				e.getBlock().setType(Material.AIR);
-				player.getInventory().addItem(
-						new ItemStack(Material.EMERALD, num));
-			}
-			num = 0;
-		}
-		if (e.getBlock().getType().equals(Material.QUARTZ_ORE)) {
-			mat = Material.QUARTZ_ORE;
-			if (player.getGameMode().equals(GameMode.CREATIVE)) {
-				e.setCancelled(false);
-			} else {
-				player.sendMessage(ChatColor.RED + "Started Scanning");
-				for (int x = -10; x < 10; x++) {
-					Block scan1 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + 0,
-							(int) loc.getZ() + 0);
-					if (scan1.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(x));
+				if (mat.equals(Material.GOLD_ORE))
+				{
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						ItemStack i = new ItemStack(mat, 1);
+						event.getPlayer().getInventory().addItem(i);
+						itemHand.setDurability((short) (itemHand.getDurability() - 1));
+						event.setCancelled(true);
+						block.setType(Material.AIR);
 					}
-					for (int y = -10; y < 10; y++) {
-						Block scan2 = loc.getWorld().getBlockAt(
-								(int) loc.getX() + x, (int) loc.getY() + y,
-								(int) loc.getZ() + 0);
-						if (scan2.getType() == mat) {
-							num++;
-							player.sendMessage(ChatColor.DARK_RED
-									+ Integer.toString(y));
-						}
-						for (int z = -10; z < 10; z++) {
-							Block scan3 = loc.getWorld().getBlockAt(
-									(int) loc.getX() + x, (int) loc.getY() + y,
-									(int) loc.getZ() + z);
-							if (scan3.getType() == mat) {
-								num++;
-								player.sendMessage(ChatColor.DARK_RED
-										+ Integer.toString(z));
-							}
-						}
-					}
+
+					return true;
+
 				}
-				player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-				e.setCancelled(true);
-				e.getBlock().setType(Material.AIR);
-				player.getInventory().addItem(
-						new ItemStack(Material.QUARTZ, num));
-				num = 0;
-			}
+				if (mat.equals(Material.DIAMOND_ORE))
+				{
+
+					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					ArrayList<Block> blocks = new ArrayList<Block>();
+					blocks.add(blockes);
+					getOre(blockes, blocks, mat);
+					getOreDown(blockes, blocks, mat);
+					for (Block block : blocks) {
+						ItemStack i = new ItemStack(Material.DIAMOND, 1);
+						event.getPlayer().getInventory().addItem(i);
+						itemHand.setDurability((short) (itemHand.getDurability() - 1));
+						event.setCancelled(true);
+						block.setType(Material.AIR);
+					}
+
+					return true;
+
+				}
+			//}
 		}
+		return false;
 	}
 
-	public int Scan(Material mat, Location loc, Player player) {
-		int num = 0;
-		player.sendMessage(ChatColor.RED + "Started Scanning");
-		for (int x = -10; x < 10; x++) {
-			Block scan1 = loc.getWorld().getBlockAt((int) loc.getX() + x,
-					(int) loc.getY() + 0, (int) loc.getZ() + 0);
-			if (scan1.getType() == mat) {
-				num++;
-				player.sendMessage(ChatColor.DARK_RED + Integer.toString(x));
-			}
-			for (int y = -10; y < 10; y++) {
-				Block scan2 = loc.getWorld().getBlockAt((int) loc.getX() + x,
-						(int) loc.getY() + y, (int) loc.getZ() + 0);
-				if (scan2.getType() == mat) {
-					num++;
-					player.sendMessage(ChatColor.DARK_RED + Integer.toString(y));
-				}
-				for (int z = -10; z < 10; z++) {
-					Block scan3 = loc.getWorld().getBlockAt(
-							(int) loc.getX() + x, (int) loc.getY() + y,
-							(int) loc.getZ() + z);
-					if (scan3.getType() == mat) {
-						num++;
-						player.sendMessage(ChatColor.DARK_RED
-								+ Integer.toString(z));
-					}
-				}
-			}
+	private Integer ORE_LIMIT = 2304;
+
+	private void getOre(Block anchor, ArrayList<Block> logs, Material mat) {
+		// Limits:
+		if (logs.size() > ORE_LIMIT) return;
+		Block nextAnchor = null;
+
+		// North:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
 		}
-		player.sendMessage(ChatColor.GREEN + "Scanning Complete");
-		return num;
+		else if (nextAnchor.getType().equals(Material.COBBLESTONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// North-east:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH_EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// East:
+		nextAnchor = anchor.getRelative(BlockFace.EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// South-east:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH_EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// South:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// South-west:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH_WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// West:
+		nextAnchor = anchor.getRelative(BlockFace.WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// North-west:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH_WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Shift anchor one up:
+		anchor = anchor.getRelative(BlockFace.UP);
+
+		// Up-north:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up-north-east:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH_EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up-east:
+		nextAnchor = anchor.getRelative(BlockFace.EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up-south-east:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH_EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up-south:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up-south-west:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH_WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up-west:
+		nextAnchor = anchor.getRelative(BlockFace.WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up-north-west:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH_WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// Up:
+		nextAnchor = anchor.getRelative(BlockFace.SELF);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOre(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
 	}
+
+	private void getOreDown(Block anchor, ArrayList<Block> logs, Material mat) {
+		// Limits:
+		if (logs.size() > ORE_LIMIT) return;
+		Block nextAnchor = null;
+
+		// Shift anchor one down:
+		anchor = anchor.getRelative(BlockFace.DOWN);
+
+		// down-north:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down-north-east:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH_EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down-east:
+		nextAnchor = anchor.getRelative(BlockFace.EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down-south-east:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH_EAST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down-south:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down-south-west:
+		nextAnchor = anchor.getRelative(BlockFace.SOUTH_WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down-west:
+		nextAnchor = anchor.getRelative(BlockFace.WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down-north-west:
+		nextAnchor = anchor.getRelative(BlockFace.NORTH_WEST);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+		// down:
+		nextAnchor = anchor.getRelative(BlockFace.SELF);
+		if (nextAnchor.getType().equals(mat) && !logs.contains(nextAnchor)) {
+			logs.add(nextAnchor);
+			getOreDown(nextAnchor, logs, mat);
+		}
+		else if (nextAnchor.getType().equals(Material.STONE) && !logs.contains(nextAnchor)) {
+
+		}
+
+	}
+
 }
