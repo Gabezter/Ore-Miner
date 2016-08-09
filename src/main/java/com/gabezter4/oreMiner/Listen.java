@@ -23,18 +23,12 @@ public class Listen implements Listener {
 
 	@EventHandler
 	public boolean triggerInteract(BlockBreakEvent event) {
-		Bukkit.getServer().broadcastMessage(ChatColor.RED + event.toString());
 		ItemStack itemHand = event.getPlayer().getInventory().getItemInHand();
 		Player player = event.getPlayer();
 
 		Block blockes = event.getBlock();
 		String matBlock = blockes.getType().toString();
 		Material mat = blockes.getType();
-		Bukkit.getServer().broadcastMessage(ChatColor.RED + itemHand.toString());
-		Bukkit.getServer().broadcastMessage(ChatColor.BLUE + event.getPlayer().getItemInHand().toString());
-		Bukkit.getServer().broadcastMessage(ChatColor.WHITE + itemHand.getType().toString());
-		Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + event.getPlayer().getItemInHand().getType().toString());
-		Bukkit.getServer().broadcastMessage(ChatColor.RED + mat.toString());
 
 		Material stone = Material.STONE_PICKAXE;
 		Material iron = Material.IRON_PICKAXE;
@@ -47,7 +41,7 @@ public class Listen implements Listener {
 				if (mat.equals(Material.COAL_ORE))
 				{
 
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
@@ -66,7 +60,7 @@ public class Listen implements Listener {
 				if (mat.equals(Material.QUARTZ_ORE))
 				{
 
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
@@ -86,7 +80,7 @@ public class Listen implements Listener {
 			if (itemHand.getType().equals(diamond) || itemHand.getType().equals(iron) || itemHand.getType().equals(stone)) {
 				if (mat.equals(Material.LAPIS_ORE))
 				{
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
@@ -142,7 +136,7 @@ public class Listen implements Listener {
 				if (mat.equals(Material.IRON_ORE))
 				{
 
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
@@ -164,7 +158,7 @@ public class Listen implements Listener {
 				if (mat.equals(Material.EMERALD_ORE))
 				{
 
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
@@ -183,7 +177,7 @@ public class Listen implements Listener {
 				if (mat.equals(Material.REDSTONE_ORE)||mat.equals(Material.GLOWING_REDSTONE_ORE))
 				{
 
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
@@ -216,7 +210,7 @@ public class Listen implements Listener {
 				}
 				if (mat.equals(Material.GOLD_ORE))
 				{
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
@@ -235,7 +229,7 @@ public class Listen implements Listener {
 				if (mat.equals(Material.DIAMOND_ORE))
 				{
 
-					Bukkit.getServer().broadcastMessage(ChatColor.GREEN + mat.toString());
+					
 					ArrayList<Block> blocks = new ArrayList<Block>();
 					blocks.add(blockes);
 					getOre(blockes, blocks, mat);
